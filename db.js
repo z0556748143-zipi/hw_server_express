@@ -1,4 +1,4 @@
-const books = [
+export const books = [
   {
     code: 1001,
     name: 'The Hobbit',
@@ -36,7 +36,7 @@ const books = [
   }
 ];
 
-const borrows = [
+export const borrows = [
   {
     borrowDate: '2026-07-10',
     customerCode: 2001
@@ -50,8 +50,3 @@ const borrows = [
     customerCode: 2003
   }
 ];
-
-module.exports = {
-  books,
-  borrows
-};

@@ -17,12 +17,25 @@ app.get('/books', (req, res) => {
 })
 
 app.get('/products/:idd', (req, res) => {
-res.send(books.find((book) => book.code === parseInt(req.params.idd)))
+  const book = books.find((book) => book.code === parseInt(req.params.idd))
+  if (!book) {
+    return res.status(404).send('Book not found')
+  }
+  res.send(book)
 })
 
 app.post('/books', (req, res) => {
   books.push(req.body)
   res.send('Book added successfully')
+})
+
+app.delete('/books/:idd', (req, res) => {
+  const bookIndex = books.findIndex((book) => book.code === parseInt(req.params.idd))
+  if (bookIndex === -1) {
+    return res.status(404).send('Book not found')
+  }
+  books.splice(bookIndex, 1)
+  res.send('Book deleted successfully')
 })
 
 app.listen(3000, () => {

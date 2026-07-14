@@ -1,0 +1,19 @@
+{
+  "name": "hw-express",
+  "version": "1.0.0",
+  "main": "index.js",
+    "type": "module",
+
+  "scripts": {
+    "test": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

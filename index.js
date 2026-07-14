@@ -4,11 +4,8 @@ import { books, borrows } from './db.js'
 const app = express()
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
 
-app.all('/', (req, res) => {
+app.get('/', (req, res) => {
 res.send('Hellow To All')
 })
 
@@ -16,7 +13,7 @@ app.get('/books', (req, res) => {
   res.send(books)
 })
 
-app.get('/products/:idd', (req, res) => {
+app.get('/books/:idd', (req, res) => {
   const book = books.find((book) => book.code === parseInt(req.params.idd))
   if (!book) {
     return res.status(404).send('Book not found')

@@ -50,3 +50,34 @@ export const borrows = [
     customerCode: 2003
   }
 ];
+
+export const users = [
+    {
+        id: 1,
+        username: "zipi_dev",
+        email: "zipi@example.com",
+        password: "password123",
+        borrowedBooks: [1, 3] // קודי ספרים שהיא השאילה
+    },
+    {
+        id: 2,
+        username: "yossi_coder",
+        email: "yossi@example.com",
+        password: "mysecretpassword",
+        borrowedBooks: [2]
+    },
+    {
+        id: 3,
+        username: "dani_reader",
+        email: "dani@example.com",
+        password: "dani12345",
+        borrowedBooks: [] // לא השאיל ספרים כרגע
+    },
+    {
+        id: 4,
+        username: "sarah_books",
+        email: "sarah@example.com",
+        password: "sarahpassword",
+        borrowedBooks: [1, 2, 3]
+    }
+];

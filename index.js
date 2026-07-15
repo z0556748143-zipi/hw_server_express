@@ -1,6 +1,7 @@
 import express from 'express'
 import booksRouter from './routs/books.router.js';
 import borrowsRouter from './routs/borrows.router.js';
+import usersRouter from './routes/user.route.js';
 
 const app = express()
 app.use(express.json())
@@ -15,6 +16,7 @@ res.send('Hellow To All')
 
 app.use('/books', booksRouter);
 app.use('/borrows',borrowsRouter);
+app.use('/users', usersRouter);
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000')

@@ -3,7 +3,17 @@ import { books, borrows } from '..db.js';
 
 
 export const getBooks= (req, res, next) => {
-  res.status(200).json(books)
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || 5;
+    const search = req.query.search || ''; 
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const filteredBooks = books.filter(b => b.name.toLowerCase().includes(search.toLowerCase()));
+    const startIndex = (page - 1) * limit;
+    const paginatedBooks = filteredBooks.slice(startIndex, startIndex + limit);
+
+    res.status(200).json(paginatedBooks);
+
 }
 
 export const getBookById =(req, res,next) => {
@@ -46,3 +56,9 @@ if (i === -1) {
     books[i].isBorrowed=false;
     res.status(200).json(books[i])
 }
+export const pagination = (req,res,next)=>{
+    const {page ,limit} =req.query;
+
+
+}
+

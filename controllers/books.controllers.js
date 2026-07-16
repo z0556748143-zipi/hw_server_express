@@ -1,4 +1,4 @@
-import { books, borrows } from '..db.js';
+import { books, borrows } from '../db.js';
 
 
 export const getBooks= (req, res, next) => {
@@ -8,7 +8,6 @@ export const getBooks= (req, res, next) => {
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const filteredBooks = books.filter(b => b.name.toLowerCase().includes(search.toLowerCase()));
-    const startIndex = (page - 1) * limit;
     const paginatedBooks = filteredBooks.slice(startIndex, startIndex + limit);
 
     res.status(200).json(paginatedBooks);

@@ -1,11 +1,16 @@
 import express from 'express'
-import booksRouter from './routs/books.router.js';
-import borrowsRouter from './routs/borrows.router.js';
+import cors from 'cors'
+
+import booksRouter from './routes/books.router.js';
+import borrowsRouter from './routes/borrows.router.js';
 import usersRouter from './routes/user.route.js';
-import { errorHandler } from './middlewares/error.middleware.js';
+import { errorHandler } from './middlewars/error.middleware.js';
 
 
 const app = express()
+
+app.use(cors())
+
 app.use(express.json())
 
 

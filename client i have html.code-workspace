@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../client i have html"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "client i have html"
+	}
+}

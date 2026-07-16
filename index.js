@@ -9,12 +9,13 @@ import booksRouter from './routes/books.router.js';
 import borrowsRouter from './routes/borrows.router.js';
 import usersRouter from './routes/user.route.js';
 import { errorHandler } from './middlewars/error.middleware.js';
-import { addDate } from './middlewars/all.middleware.js';
+import { addDate,newDate } from './middlewars/all.middleware.js';
 
 const app = express()
 
 app.use(cors())
 app.use(addDate)
+app.get('*', newDate);
 
 // 3. הגדרת הלימיט (למשל: עד 100 בקשות בכל 15 דקות)
 const limiter = rateLimit({
@@ -38,7 +39,7 @@ app.use('/books', booksRouter);
 app.use('/borrows',borrowsRouter);
 app.use('/users', usersRouter);
 
-
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(3000, () => {

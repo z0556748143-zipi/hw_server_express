@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { books, borrows } from '../db.js';
-import {isBorrow } from "../middlewars/simple.js";
+import {isBorrow } from "../middlewars/borrows.middleware.js";
 import {addBorrow} from "../controllers/borrows.controllers.js"; 
 
 

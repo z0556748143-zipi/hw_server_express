@@ -12,9 +12,13 @@ export const errorHandler = (err, req, res, next) => {
     const error4Client = {
         type: err.type,
         message: err.error.message,
-        stack: err.error.stack,
-        fixEmail: 'help@gmail.com'
     };
-
+    if (process.env.NODE_ENV === 'development') {
+        error4Client.stack = err.error.stack;
+    }
     res.status(err.status).json({ error: error4Client });
+};
+
+export const notFoundHandler = (req, res, next) => {
+    res.status(404).json({error: {message: "Route not found"}});
 };

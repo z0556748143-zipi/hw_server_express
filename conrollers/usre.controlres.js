@@ -6,8 +6,13 @@ export const getAllUsers = (req, res) => {
 
 export const signUp=(req,res) =>{
 const existingUser = users.find(u => u.id === req.body.id);
-if (existingUser) 
-        return res.status(400).json({ message: "User with this ID already exists!" });
+if (existingUser) {
+    next({
+        error: new Error('User with this ID already exists!'),
+        status: 400,
+        type: 'Bad Request'
+    });
+}
     users.push(req.body);
     res.status(201).json({ message: "User added successfully", user: req.body });
 }

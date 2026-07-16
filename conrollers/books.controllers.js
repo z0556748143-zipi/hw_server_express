@@ -1,7 +1,6 @@
 import { books, borrows } from '..db.js';
 
 
-
 export const getBooks= (req, res, next) => {
     const page = +req.query.page || 1;
     const limit = +req.query.limit || 5;
@@ -19,29 +18,44 @@ export const getBooks= (req, res, next) => {
 export const getBookById =(req, res,next) => {
   const book = books.find((book) => book.code === parseInt(req.params.idd))
   if (!book) {
-    return res.status(404).send('Book not found')
+    next ({
+      error: new Error('Book not found'),
+      status: 404,
+      type: 'Not Found'
+    })
   }
-  res.send(book)
+  res.json(book)
 }
 
 export const addNewBook = (req, res) => {
   books.push(req.body)
-  res.json({error: 'Book added successfully'})
+  res.json({success: 'Book added successfully'})
 }
 
 export const deleteBook= (req, res,next) => {
   const bookIndex = books.findIndex((book) => book.code === parseInt(req.params.idd))
   if (bookIndex === -1) {
-     res.status(404).send('Book not found')
+    next ({
+      error: new Error('Book not found'),
+      status: 404,
+      type: 'Not Found'
+    })
+  
   }
   books.splice(bookIndex, 1)
-  res.send('Book deleted successfully')
+  res.json({success: 'Book deleted successfully'})
 }
 
 export const updateBook = (req,res,next)=>{
   const bindex=books.findIndex((book) => book.code === +req.params.idd)
   if (bookIndex === -1) 
-   res.status(404).json({erroe: 'Book not found'})
+  {
+    next ({
+      error: new Error('Book not found'),
+      status: 404,
+      type: 'Not Found'
+    })
+  }
   books[bindex].name=req.body.name;
   books[bindex].category=req.body.category;
   books[bindex].code=req.body.code;
@@ -52,13 +66,17 @@ export const updateBook = (req,res,next)=>{
 export const returnBook=(req,res,next)=>{
 const i=books.findIndex((book) => book.code === +req.params.idd)
 if (i === -1) {
-     res.status(404).send('Book not found') }
+  next ({
+    error: new Error('Book not found'),
+    status: 404,
+    type: 'Not Found'
+  })   }
     books[i].isBorrowed=false;
     res.status(200).json(books[i])
 }
 export const pagination = (req,res,next)=>{
     const {page ,limit} =req.query;
-
-
 }
+
+
 

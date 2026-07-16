@@ -8,14 +8,14 @@ import helmet from 'helmet'; //מוסיף הגדרות אבטחה שחוסמות
 import booksRouter from './routes/books.router.js';
 import borrowsRouter from './routes/borrows.router.js';
 import usersRouter from './routes/user.route.js';
-import { errorHandler } from './middlewars/error.middleware.js';
+import { errorHandler ,notFoundHandler} from './middlewars/error.middleware.js';
 import { addDate,newDate } from './middlewars/all.middleware.js';
 
 const app = express()
 
 app.use(cors())
 app.use(addDate)
-app.get('*', newDate);
+app.get(/.*/, newDate);
 
 // 3. הגדרת הלימיט (למשל: עד 100 בקשות בכל 15 דקות)
 const limiter = rateLimit({

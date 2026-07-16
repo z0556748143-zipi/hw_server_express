@@ -1,13 +1,13 @@
 import Joi from 'joi';
 
-export const validateUser = (req, res, next) => {
+
+export const validateBook = (req, res, next) => {
     const schema = Joi.object({
-        idNumber: Joi.string().length(9).pattern(/^[0-9]+$/).required(),
-        username: Joi.string().min(5).pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/).required()
+        year: Joi.number().integer().min(1500).max(2026).required(),        
+        price: Joi.number().min(0).required()
     });
 
     const { error } = schema.validate(req.body);
-
     if (error) {
         return next({ 
             status: 400, 
@@ -15,8 +15,5 @@ export const validateUser = (req, res, next) => {
             error: { message: error.details[0].message } 
         });
     }
-
     next();
 };
-
-

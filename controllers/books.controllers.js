@@ -1,16 +1,18 @@
 import { books, borrows } from '../dbb.js';
 
+import {Book} from '../models/book.model.js'
 
-export const getBooks= (req, res, next) => {
-    const page = +req.query.page || 1;
-    const limit = +req.query.limit || 5;
-    const search = req.query.search || ''; 
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const filteredBooks = books.filter(b => b.name.toLowerCase().includes(search.toLowerCase()));
-    const paginatedBooks = filteredBooks.slice(startIndex, startIndex + limit);
+export const getBooks= async (req, res, next) => {
+    // const page = +req.query.page || 1;
+    // const limit = +req.query.limit || 5;
+    // const search = req.query.search || ''; 
+    // const startIndex = (page - 1) * limit;
+    // const endIndex = startIndex + limit;
+   // const filteredBooks = books.filter(b => b.name.toLowerCase().includes(search.toLowerCase()));
+   const filteredBooks = await Book.find();
+   // const paginatedBooks = filteredBooks.slice(startIndex, startIndex + limit);
 
-    res.status(200).json(paginatedBooks);
+    res.status(200).json(filteredBooks);
 
 }
 

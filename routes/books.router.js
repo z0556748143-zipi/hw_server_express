@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { books, borrows } from '../db.js';
+import { books, borrows } from '../dbb.js';
 import {getBooks, getBookById, addNewBook, deleteBook, updateBook , returnBook} from "../controllers/books.controllers.js";
 import { validateBook } from "../middlewars/books.middleware.js";
 import {validate} from '../middlewars/all.middleware.js';

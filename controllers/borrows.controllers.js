@@ -1,4 +1,4 @@
-import { books, borrows } from '../db.js';
+import { books, borrows } from '../dbb.js';
 
 export const addBorrow=(req,res,next)=>{
 borrows.push(req.body);

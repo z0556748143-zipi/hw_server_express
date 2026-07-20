@@ -3,6 +3,8 @@ import Joi from 'joi';
 
 export const validateBook = (req, res, next) => {
     const schema = Joi.object({
+        name: Joi.string().min(2).max(20).required(),
+        category: Joi.string().valid('Fiction', 'Science', 'History', 'Children').required(),
         year: Joi.number().integer().min(1500).max(2026).required(),        
         price: Joi.number().min(0).required()
     });

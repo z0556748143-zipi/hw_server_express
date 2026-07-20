@@ -40,10 +40,23 @@ export const getBookById =(req, res,next) => {
     }
   }
 export const addNewBook = async (req, res) => {
-   const newBook = new Book(req.body);
-        // 2. DB-שמירת האוביקט ב
+   try {
+        const existingBook = await Book.findOne({ name: req.body.name });
+        if (existingBook) {
+            return next({
+                status: 400,
+                type: 'ValidationError',
+                error: new Error('A book with this name already exists')
+            });
+        }
+
+        const newBook = new Book(req.body);
         await newBook.save();
-  res.status(201).json(newBook)
+
+        res.status(201).json(newBook);
+    } catch (error) {
+        next(error);
+    }
 }
 
 export const deleteBook= async (req, res,next) => {

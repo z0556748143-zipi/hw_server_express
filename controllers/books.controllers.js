@@ -131,5 +131,19 @@ export const pagination = (req,res,next)=>{
     const {page ,limit} =req.query;
 }
 
+export const getBooksByCategory = async (req, res, next) => {
+    try {
+        const { category='' } = req.params;
+        const booksByCategory = await Book.find({ category: category });
+        if (!booksByCategory || booksByCategory.length === 0) {
+            return next({
+                error: new Error('No books found in this category'),
+                status: 404,
+                type: 'Not Found'
+            });
+        }
+        res.status(200).json(booksByCategory);
+    } catch (error) {
+        next({ status: 500, error: err, type: 'server error' });
 
-
+    }   }

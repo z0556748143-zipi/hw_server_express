@@ -45,11 +45,15 @@ export const signUp = async (req, res, next) => {
 };
 
 
-export const signIn= (req,res) =>{
-const user = users.find(u => u.id === req.body.id && u.password === req.body.password);
+export const signIn=async (req,res,next) =>{
+try {
+const user = await User.findOne({ id: req.body.id, password: req.body.password });
     if (!user) 
         return res.status(401).json({error: "Login failed" });
 
     res.status(200).json( user);
+}
+catch (error) {
+     next({ status: 500, error: err, type: 'server error' });}
 }
 

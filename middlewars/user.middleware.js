@@ -2,8 +2,13 @@ import Joi from 'joi';
 
 export const validateUser = (req, res, next) => {
     const schema = Joi.object({
-        idNumber: Joi.string().length(9).pattern(/^[0-9]+$/).required(),
-        username: Joi.string().min(5).pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/).required()
+        name: Joi.string().required(),
+
+        email: Joi.string().email().required(), 
+        
+        phone: Joi.string().pattern(/^0[2-9]\d{7,8}$/).required(), 
+        
+        password: Joi.string().min(4).required()
     });
 
     const { error } = schema.validate(req.body);

@@ -17,64 +17,103 @@ export const getBooks= async (req, res, next) => {
 }
 
 export const getBookById =(req, res,next) => {
-  const book = books.find((book) => book.code === parseInt(req.params.idd))
-  if (!book) {
-    next ({
-      error: new Error('Book not found'),
-      status: 404,
-      type: 'Not Found'
-    })
+ try {
+        const { idd } = req.params; 
+        if (!isValidObjectId(idd)) {
+            return next({
+                error: new Error('Book not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+        const book = await Book.findById(idd);
+        if (!book) {
+            return next({
+                error: new Error('Book not found'),
+                status: 404,
+                type: 'Not Found'
+            });
+        }
+        res.status(200).json(book);
+    } catch (error) {
+        next(error);
+    }
   }
-  res.json(book)
+export const addNewBook = async (req, res) => {
+   const newBook = new Book(req.body);
+        // 2. DB-שמירת האוביקט ב
+        await newBook.save();
+  res.status(201).json(newBook)
 }
 
-export const addNewBook = (req, res) => {
-  books.push(req.body)
-  res.json({success: 'Book added successfully'})
+export const deleteBook= async (req, res,next) => {
+          const idx = req.params.idx;
+if (!isValidObjectId(idx)) {
+            return next({
+                error: new Error('Book not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+         const p = await Book.findByIdAndDelete(idx);
+         if (p) {
+            return res.status(204).send();
+        }
+         return next({
+            error: new Error('Book not found'),
+            type: 'resource not found error',
+            status: 404
+        });
 }
 
-export const deleteBook= (req, res,next) => {
-  const bookIndex = books.findIndex((book) => book.code === parseInt(req.params.idd))
-  if (bookIndex === -1) {
-    next ({
-      error: new Error('Book not found'),
-      status: 404,
-      type: 'Not Found'
-    })
-  
-  }
-  books.splice(bookIndex, 1)
-  res.json({success: 'Book deleted successfully'})
+export const updateBook =async (req,res,next)=>{
+  try {
+        const { id } = req.params;
+        if (!isValidObjectId(id)) {
+            return next({
+                error: new Error('Book not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+
+        const updatedBook = await Book.findByIdAndUpdate(
+            id,
+            req.body, 
+            { new: true } 
+        );
+
+        if (!updatedBook) {
+            return next({
+                error: new Error('Book not found'),
+                status: 404,
+                type: 'Not Found'
+            });
+        }
+
+        res.status(200).json(updatedBook);
+    } catch (error) {
+        next(error);
+    }
 }
 
-export const updateBook = (req,res,next)=>{
-  const bindex=books.findIndex((book) => book.code === +req.params.idd)
-  if (bookIndex === -1) 
-  {
-    next ({
-      error: new Error('Book not found'),
-      status: 404,
-      type: 'Not Found'
-    })
-  }
-  books[bindex].name=req.body.name;
-  books[bindex].category=req.body.category;
-  books[bindex].code=req.body.code;
-  books[bindex].price=req.body.price;
-  res.status(200).json(books[index]);
-}
+export const returnBook = async (req, res, next) => {
+    try {
+        const bookCode = +req.params.idd; 
+        const book = await Book.findOne({ code: bookCode });
+        if (!book) {
+            return next({
+                error: new Error('Book not found'),
+                status: 404,
+                type: 'Not Found'
+            });
+        }
+        res.status(200).json(book);
+    } catch (error) {
+        next(error);
+    }
+};
 
-export const returnBook=(req,res,next)=>{
-const i=books.findIndex((book) => book.code === +req.params.idd)
-if (i === -1) {
-  next ({
-    error: new Error('Book not found'),
-    status: 404,
-    type: 'Not Found'
-  })   }
-    books[i].isBorrowed=false;
-    res.status(200).json(books[i])
-}
 export const pagination = (req,res,next)=>{
     const {page ,limit} =req.query;
 }

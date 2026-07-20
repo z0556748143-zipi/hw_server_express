@@ -1,22 +1,29 @@
 import { books, borrows,users } from '../dbb.js';
 
-export const getAllUsers = (req, res) => {
-    res.status(200).json(users);
+export const getAllUsers =async (req, res) => {
+    try {
+        const allUsers = await User.find();
+        res.status(200).json(allUsers);
+    } catch (error) {
+       next({ status: 500, error: err, type: 'server error' });
+    }
 };
 
-export const signUp=(req,res) =>{
-const existingUser = users.find(u => u.id === req.body.id);
-if (existingUser) {
-    next({
-        error: new Error('User with this ID already exists!'),
-        status: 400,
-        type: 'Bad Request'
-    });
-}
-    const normalizedEmail = req.body.email.toLowerCase();
+export const signUp = async (req, res, next) => {
+    try {
+        const existingIdUser = await User.findOne({ id: req.body.id });
+        if (existingIdUser) {
+            return next({
+                status: 400,
+                type: 'Bad Request',
+                error: new Error('User with this ID already exists!')
+            });
+        }
 
-        const existingUser = await User.findOne({ email: normalizedEmail });
-        if (existingUser) {
+        const normalizedEmail = req.body.email.toLowerCase();
+
+        const existingEmailUser = await User.findOne({ email: normalizedEmail });
+        if (existingEmailUser) {
             return next({
                 status: 400,
                 type: 'ValidationError',
@@ -24,14 +31,18 @@ if (existingUser) {
             });
         }
 
-    const newUser = await User.create({
+        const newUser = await User.create({
             ...req.body,
             email: normalizedEmail,
             registrationDate: new Date()
         });
 
-    res.status(201).json({ message: "User added successfully", user: newUser });
-}
+        res.status(201).json({ message: "User added successfully", user: newUser });
+        
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 export const signIn= (req,res) =>{
